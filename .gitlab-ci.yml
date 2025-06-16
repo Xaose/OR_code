@@ -1,0 +1,21 @@
+stages:
+  - build
+
+build-macos:
+  stage: build
+  tags:
+    - macos
+  script:
+    - python3 -m pip install --upgrade pip
+    - pip3 install kivy==2.3.0 pyinstaller==6.10.0 kivy-deps.sdl2 kivy-deps.glew kivy-deps.gstreamer
+    - pyinstaller --name OR_Code \
+                  --windowed \
+                  --add-data "assets:assets" \
+                  main.py
+    - zip -r OR_Code.zip dist/YourAppName.app
+  artifacts:
+    paths:
+      - OR_Code.zip
+    expire_in: 1 week
+  only:
+    - main
